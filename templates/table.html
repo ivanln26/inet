@@ -10,13 +10,15 @@
       </tr>
     </thead>
     <tbody>
+      {% for i in data %}
       <tr>
-        <th>1</th>
-        <td>15.1</td>
-        <td>22.3</td>
-        <td>Oeste</td>
-        <td>76.4</td>
+        <th>{{ i.id }}</th>
+        <td>{{ i.i }}</td>
+        <td>{{ i.v }}</td>
+        <td>{{ i.w_d }}</td>
+        <td>{{ i.w_s }}</td>
       </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
