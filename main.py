@@ -1,15 +1,19 @@
-from flask import Flask, render_template
+from datetime import datetime
+
 import click
 import requests
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
+
 class Muestra(db.Model):
+
     id = db.Column(db.DateTime, primary_key=True)
     i = db.Column(db.Float)
     v = db.Column(db.Float)
@@ -17,13 +21,15 @@ class Muestra(db.Model):
     w_s = db.Column(db.Float)
 
     def __repr__(self):
-        return '<Muestra %r>' % self.id
+        return f'<Muestra {self.id}>'
 
-r = requests.get('http://192.168.30.199:9090/')
-a = r.json()
 
 @click.command()
-def hello():
+@click.option('--host', default='localhost')
+@click.option('--port', default='9090')
+def hello(host, port):
+    r = requests.get(f'http://{host}:{port}/')
+    a = r.json()
     db.create_all()
 
     for k, v in a.items():
@@ -34,12 +40,11 @@ def hello():
             db.session.add(muestra)
             db.session.commit()
             click.echo(muestra)
-    click.echo(Muestra.query.order_by(Muestra.id).all()[:24])
 
 
 @app.route('/')
 def index():
-    data = Muestra.query.order_by(Muestra.id.desc()).all()[:24]
+    data = Muestra.query.order_by(Muestra.id.desc()).all()[:144]
     return render_template('index.html', data=data)
 
 if __name__ == "__main__":
