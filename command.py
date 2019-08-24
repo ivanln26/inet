@@ -3,8 +3,7 @@ from datetime import datetime
 import click
 import requests
 
-from main import db
-from muestra.models import Muestra
+from muestra.models import Muestra, db
 
 @click.command()
 @click.option('--host', default='localhost')
