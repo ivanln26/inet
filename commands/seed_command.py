@@ -5,8 +5,8 @@ from flask.cli import with_appcontext
 import requests
 
 @click.command()
-@click.option('--host', default='localhost')
-@click.option('--port', default='9090')
+@click.option('--host', default='localhost', help='Set localhost')
+@click.option('--port', default=9090, help='Set port')
 @with_appcontext
 def seed_command(host, port):
     from app import db
