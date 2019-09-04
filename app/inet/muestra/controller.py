@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import render_template
 
-from .models import Muestra
+from .model import Muestra
 
 bp = Blueprint('muestra', __name__)
 
